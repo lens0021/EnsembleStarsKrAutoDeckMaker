@@ -62,7 +62,7 @@ div.header h2 {
 	position: relative;
 	margin: auto;
 	width: 28rem;
-	height: 22rem;
+	height: 19rem;
 }
 
 .deck {
@@ -109,7 +109,7 @@ div.header h2 {
 	background-color: #ee5b5b;
 }
 
-.deck.perfomance .type {
+.deck.performance .type {
 	background-color: #f2b119;
 }
 
@@ -130,17 +130,33 @@ div.header h2 {
 	width: 100%;
 }
 
+.unit dl {
+	margin: 0;
+}
+
 .unit li {
 	float:left;
 }
 
 .unit-name {
 	font-size: .8em;
-	width: 5em;
+	width: 100%;
 	border-radius: .5em;
 	text-align: center;
-	background-color: #ee5b5b;
+	background-color: lightgray;
 	color: white;
+}
+
+.deck.dance .unit-name {
+	background-color: #00b1ec;
+}
+
+.deck.vocal .unit-name {
+	background-color: #ee5b5b;
+}
+
+.deck.performance .unit-name {
+	background-color: #f2b119;
 }
 
 .unit-total-ability {
@@ -222,15 +238,15 @@ div.header h2 {
 }
 
 .deck-option li.dance a {
-	background-color: #00b1ec
+	background-color: #00b1ec;
 }
 
 .deck-option li.vocal a {
-	background-color: #ee5b5b
+	background-color: #ee5b5b;
 }
 
-.deck-option li.perfomance a {
-	background-color: #f2b119
+.deck-option li.performance a {
+	background-color: #f2b119;
 }
 
 .deck-option li~li {

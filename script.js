@@ -74,6 +74,13 @@ $( document ).ready( function() {
 		$card.find("input[type='number']").on( "click", function(e) {
 		   $(this).select();
 		});
+
+		$card.find("input[type='number']").keydown(function (e) {
+			if (e.which === 13) {
+				 var index = $("input[type='number']").index(this) + 1;
+				 $("input[type='number']").eq(index).focus().select();
+			 }
+		 });
 		var cnt=0;
 		$card.find("input[type='number']").on( 'input', function(e) {
 			var type = abilityFromNumber[$(this).prevAll().length];
@@ -119,6 +126,7 @@ $( document ).ready( function() {
 		onChangedData();
 	})
 
+	initializeCard($('.input .card'));
 	onChangedData();
 
 	$('.deck').toggleClass('empty');

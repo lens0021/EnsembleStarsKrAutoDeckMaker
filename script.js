@@ -78,7 +78,13 @@ $( document ).ready( function() {
 		$card.find("input[type='number']").keydown(function (e) {
 			if (e.which === 13) {
 				 var index = $("input[type='number']").index(this) + 1;
-				 $("input[type='number']").eq(index).focus().select();
+				 if ( index <= $("input[type='number']").length - 1 )
+				 	$("input[type='number']").eq(index).focus().select();
+				 else {
+				 	data['cards'].push( { idol: undefined, dance: 0, vocal: 0, performance: 0 } );
+				 	onChangedData();
+				 	$("input[type='number']").eq(index).focus().select();
+				 }
 			 }
 		 });
 		var cnt=0;

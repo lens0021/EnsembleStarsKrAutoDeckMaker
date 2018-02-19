@@ -1,7 +1,6 @@
 {
     "name": "앙상블스타즈 for kakao 자동 덱 짜주기 (비공식)",
 	"short_name": "한스타 덱 짜주기",
-	"icons": [],
 	"display": "standalone",
 	"orientation": "landscape"
 }

@@ -329,6 +329,9 @@ div.header h2 {
 }
 
 @media screen and (max-width: 30rem) {
+	.content {
+		padding: 0;
+	}
 	.display {
 		width: 22rem;
 	}

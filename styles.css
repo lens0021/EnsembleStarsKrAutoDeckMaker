@@ -1,0 +1,341 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-color: lightgray;
+}
+
+a {
+	text-decoration: none;
+}
+
+.header {
+	overflow: hidden;
+	text-align: center;
+}
+
+.content {
+	max-width: 50rem;
+	height: 100%;
+	margin: 0 auto;
+	padding: 1em;
+	overflow: hidden;
+	background-color: white;
+}
+
+/*
+댄스 #ee5b5b
+보컬 #00b1ec
+퍼포먼스 #f2b119
+*/
+
+div.header h1 {
+	margin-bottom: 0;
+}
+
+div.header h2 {
+	margin-top: 0;
+}
+
+.content ol, .content ul {
+	padding: 0;
+	list-style-type: none;
+}
+
+.content dl {
+	overflow: hidden;
+}
+
+.content dt, .content dd {
+	float: left;
+	margin: .1em 0;
+}
+
+.content dt {
+	clear: left;
+}
+
+.content dd {
+	margin-left: 1em;
+}
+
+.display {
+	position: relative;
+	margin: auto;
+	width: 28rem;
+	height: 22rem;
+}
+
+.deck {
+	position: absolute;
+	overflow: hidden;
+	width:21rem;
+}
+
+.deck li {
+	float:left;
+	margin: .2rem;
+}
+
+.deck-total-ability {
+	padding-left: 1em;
+}
+
+.deck-total-ability dl {
+	padding-left: .2em;
+}
+
+.deck-total-ability .type, .deck-total-ability dl {
+	display: inline-block;
+	margin: 0;
+	vertical-align: middle;
+}
+
+.deck-total-ability dl {
+	font-size: 1.3em;
+}
+
+.deck-total-ability .type {
+	width: 2em;
+	height: 2em;
+	border-radius: 1em;
+	background-color: lightgray;
+}
+
+.deck.dance .type {
+	background-color: #00b1ec;
+}
+
+.deck.vocal .type {
+	background-color: #ee5b5b;
+}
+
+.deck.perfomance .type {
+	background-color: #f2b119;
+}
+
+.units {
+	overflow: hidden;
+}
+
+.units > li {
+	width: 100%;
+}
+
+.unit:not(.main-unit) {
+	font-size: 0.8rem;
+}
+
+.unit {
+	display: block;
+	width: 100%;
+}
+
+.unit li {
+	float:left;
+}
+
+.unit-name {
+	font-size: .8em;
+	width: 5em;
+	border-radius: .5em;
+	text-align: center;
+	background-color: #ee5b5b;
+	color: white;
+}
+
+.unit-total-ability {
+	display: inline-block;
+	font-size: .9em;
+}
+
+.unit .cards {
+	display: inline-block;
+}
+
+.unit .card {
+	overflow: hidden;
+}
+
+.unit .card .thumb {
+	width: 3em;
+	height: 3em;
+	border-radius: .5em;
+	background-color: lightgray;
+}
+
+.unit .card .ability {
+	margin: auto;
+	text-align: center;
+}
+
+.unit .switch {
+	display: inline-block;
+}
+
+.switch {
+	width: 4em;
+	height: 2.2em;
+	border-radius: 1.1em;
+	background-color: lightgray;
+}
+
+.switch .switch-thumb {
+	margin-top: 0.1em;
+	margin-left: 0.1em;
+	width: 2em;
+	height: 2em;
+	border-radius: 1em;
+	background-color: white;
+}
+
+.switch.active {
+	background-color: lightblue;
+}
+
+.switch.active .switch-thumb {
+	margin-left: 1.9em;
+}
+
+.deck.empty {
+	color: lightgray;
+}
+
+.deck.empty dt, .deck.empty .type {
+	background-color: lightgray;
+}
+
+.deck-option {
+	position: absolute;
+	left: 21rem;
+	width: 6rem;
+	right: 0;
+	margin-left: 1rem;
+}
+
+.deck-option a {
+	display: block;
+	height: 4em;
+	border-radius: 1em;
+	text-align: center;
+	line-height: 4em;
+	color: white;
+}
+
+.deck-option li.dance a {
+	background-color: #00b1ec
+}
+
+.deck-option li.vocal a {
+	background-color: #ee5b5b
+}
+
+.deck-option li.perfomance a {
+	background-color: #f2b119
+}
+
+.deck-option li~li {
+	padding-top: .5em;
+}
+
+.input {
+	text-align: center;
+}
+
+.input .card, .input .add-card {
+	position: relative;
+	display: inline-block;
+	width: 10em;
+	height: 4.5em;
+	border-radius: .5em;
+	background-color: lightgray;
+	margin: .1em;
+}
+
+.remove-card {
+	font-size: 2em;
+	position: absolute;
+	display: block;
+	right: 0.1em;
+	top: 0;
+	bottom: 0;
+	width: 1em;
+	text-align: center;
+	color: white;
+	line-height: 2em;
+}
+
+.add-card {
+	line-height: 4.5em;
+	text-align: center;
+}
+
+.add-card a {
+	font-size: 2em;
+	position: absolute;
+	display: block;
+	margin: auto;
+	width: 100%;
+	color: white;
+}
+
+.input .card-thumb {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 4em;
+	height: 4em;
+	margin: 0.25em;
+	background-color: white;
+	border-radius: .5em;
+}
+
+.input .abilities {
+	position: absolute;
+	left: 4.25em;
+	width: 3em;
+	height: 4.5em;
+	padding-top: .2em;
+	padding-left: .5em;
+}
+
+.input .abilities input {
+	max-width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.tools ul {
+	overflow: hidden;
+}
+
+.tools li {
+	float: left;
+}
+
+.tools li~li {
+	padding-left: 1em;
+}
+
+.footer {
+	margin-bottom: 3rem;
+	border-top: 0.05rem solid lightgray;
+	font-size: .8rem;
+}
+
+.footer > p {
+	display: inline-block;
+}
+
+@media screen and (max-width: 30rem) {
+	.display {
+		width: 22rem;
+	}
+	.deck {
+		margin: auto;
+	}
+	.deck-option {
+		display: none;
+	}
+}

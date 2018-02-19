@@ -1,1 +1,238 @@
-<h1>Hello World!</h1>
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+	<title>(비공식)한스타 자동 덱 짜주기 by 낙엽</title>
+	<link rel="stylesheet" href="styles.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="script.js"></script>
+</head>
+<body>
+	<div class="content">
+		<div class="display">
+			<div class="deck empty">
+				<div class="deck-total-ability">
+					<a class="type" href="#"></a>
+					<dl class="deck-total-ability">
+						<dt>총합</dt>
+						<dd>0</dd>
+					</dl>
+				</div>
+				<ol class="units">
+					<li>
+						<div class="unit main-unit">
+							<div class="unit-name">메인 팀</div>
+							<dl class="unit-total-ability">
+								<dt>총합</dt>
+								<dd>0</dd>
+								<dt>스킬</dt>
+								<dd>0</dd>
+							</dl>
+							<ol class="cards">
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+							</ol>
+						</div>
+					</li>
+					<li>
+						<div class="unit">
+							<div class="unit-name name">서브 팀 1</div>
+							<dl class="unit-total-ability">
+								<dt>총합</dt>
+								<dd>0</dd>
+								<dt>스킬</dt>
+								<dd>0</dd>
+							</dl>
+							<ol class="cards">
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+							</ol>
+							<a class="switch" id="unit3-switch" href="#">
+								<div class="switch-base">
+									<div class="switch-thumb"></div>
+								</div>
+							</a>
+						</div>
+					</li>
+					<li>
+						<div class="unit">
+							<div class="unit-name name">서브 팀 2</div>
+							<dl class="unit-total-ability">
+								<dt>총합</dt>
+								<dd>0</dd>
+								<dt>스킬</dt>
+								<dd>0</dd>
+							</dl>
+							<ol class="cards">
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+								<li>
+									<div class="card">
+										<img class="thumb"/>
+										<div class="ability">0</div>
+									</div>
+								</li>
+							</ol>
+							<a class="switch" id="unit3-switch" href="#">
+								<div class="switch-base">
+									<div class="switch-thumb"></div>
+								</div>
+							</a>
+						</div>
+					</li>
+				</ol>
+			</div>
+			<div class="deck-option">
+				<ol>
+					<li class="dance" id="deck-option-dance">
+						<a href="#">댄스</a>
+					</li>
+					<li class="vocal" id="deck-option-vocal">
+						<a href="#">보컬</a>
+					</li>
+					<li class="perfomance" id="deck-option-perfomance">
+						<a href="#">퍼포먼스</a>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class="input">
+			<div class="card">
+				<div class="card-thumb"></div>
+				<div class="abilities">
+					<input class="card-dance" type="number" value="0" />
+					<input class="card-vocal" type="number" value="0" />
+					<input class="card-performance" type="number" value="0" />
+				</div>
+				<a class="remove-card" href="#">-</a>
+			</div>
+			<div class="card">
+				<div class="card-thumb"></div>
+				<div class="abilities">
+					<input class="card-dance" type="number" value="0" />
+					<input class="card-vocal" type="number" value="0" />
+					<input class="card-performance" type="number" value="0" />
+				</div>
+				<a class="remove-card" href="#">-</a>
+			</div>
+			<div class="card">
+				<div class="card-thumb"></div>
+				<div class="abilities">
+					<input class="card-dance" type="number" value="0" />
+					<input class="card-vocal" type="number" value="0" />
+					<input class="card-performance" type="number" value="0" />
+				</div>
+				<a class="remove-card" href="#">-</a>
+			</div>
+			<div class="card">
+				<div class="card-thumb"></div>
+				<div class="abilities">
+					<input class="card-dance" type="number" value="0" />
+					<input class="card-vocal" type="number" value="0" />
+					<input class="card-performance" type="number" value="0" />
+				</div>
+				<a class="remove-card" href="#">-</a>
+			</div>
+			<div class="card">
+				<div class="card-thumb"></div>
+				<div class="abilities">
+					<input class="card-dance" type="number" value="0" />
+					<input class="card-vocal" type="number" value="0" />
+					<input class="card-performance" type="number" value="0" />
+				</div>
+				<a class="remove-card" href="#">-</a>
+			</div>
+			<div class="add-card">
+				<a href="#">+</a>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="tools">
+				<ul>
+					<li><a href="#">가져오기</a></li>
+					<li><a href="#">내보내기</a></li>
+				</ul>
+			</div>
+			한스타 자동 덱 짜주기 <small>(비공식)</small> by 낙엽
+		</div>
+	</div>
+</body>
+</html>

@@ -60,21 +60,22 @@ div.header h2 {
 }
 
 .display {
+	font-size: 1.3em;
 	position: relative;
 	margin: auto;
-	width: 28rem;
-	height: 19rem;
+	width: 28em;
+	height: 19em;
 }
 
 .deck {
 	position: absolute;
 	overflow: hidden;
-	width:21rem;
+	width:21em;
 }
 
 .deck li {
 	float:left;
-	margin: .2rem;
+	margin: .2em;
 }
 
 .deck-total-ability {
@@ -223,10 +224,10 @@ div.header h2 {
 
 .deck-option {
 	position: absolute;
-	left: 21rem;
-	width: 6rem;
+	left: 21em;
+	width: 6em;
 	right: 0;
-	margin-left: 1rem;
+	margin-left: 1em;
 }
 
 .deck-option a {
@@ -261,7 +262,7 @@ div.header h2 {
 .input .card, .input .add-card {
 	position: relative;
 	display: inline-block;
-	width: 10em;
+	width: 11em;
 	height: 4.5em;
 	border-radius: .5em;
 	background-color: lightgray;
@@ -314,8 +315,8 @@ div.header h2 {
 
 .input .abilities {
 	position: absolute;
+	right: 2em;
 	left: 4.25em;
-	width: 3em;
 	height: 4.5em;
 	padding-top: .2em;
 	padding-left: .5em;
@@ -362,6 +363,7 @@ div.header h2 {
 
 .idolPicker {
 	position: fixed;
+	max-width: 50em;
 	top: 2em;
 	right: 5em;
 	bottom: 2em;
@@ -407,6 +409,7 @@ div.header h2 {
 		padding: 1em 0;
 	}
 	.display {
+		font-size: 1em;
 		width: 22rem;
 	}
 	.deck {

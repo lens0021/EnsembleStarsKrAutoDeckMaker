@@ -280,12 +280,12 @@ $( document ).ready( function() {
 	$('.deck-total-ability a').click( function( event ) {
 		event.preventDefault();
 		var crtType = getData( 'type' );
-		if ( crtType == 'performance' )
-			setData( 'type', 'dance' );
 		if ( crtType == 'dance' )
 			setData( 'type', 'vocal' );
-		else
+		if ( crtType == 'vocal' )
 			setData( 'type', 'performance' );
+		else if ( crtType == 'performance' )
+			setData( 'type', 'dance' );
 	});
 
 	$('.add-card a').click( function(event) {
@@ -294,7 +294,23 @@ $( document ).ready( function() {
 	});
 
 	$('.overlay').click( function(event) {
-		// $(this).toggle( false );
+		$(this).toggle( false );
+	});
+
+	$('#import').click( function(event) {
+		event.preventDefault();
+
+		var str = window.prompt("「내보내기」한 텍스트를 붙여넣어 주세요.","");
+		if ( str != null &&  str != '' ){
+			data = convertHexStringToData(str);
+			onChangedData( false );
+		}
+	});
+
+	$('#export').click( function(event) {
+		event.preventDefault();
+
+		prompt("다음을 「복사」해서 저장하세요.", getHexStringData());
 	});
 
 	$('.deck').toggleClass('loading');

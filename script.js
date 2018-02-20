@@ -169,7 +169,7 @@ var onChangedData = function () {
 	var d = new Date();
 	var exdays = 30;
 	d.setTime(d.getTime() + (exdays*24*60*60*1000));
-	document.cookie = "data="+hexData+';expires=' + d.toUTCString() + ';';
+	document.cookie = 'data='+hexData+';expires=' + d.toUTCString() + ';';
 	console.log('쿠키가 다음과 같이 쓰였습니다: '+document.cookie);
 	// 디자인 변경
 	// 속성
@@ -206,12 +206,12 @@ $( document ).ready( function() {
 	console.log( '쿠키가 있는지 확인합니다.' )
 	var cookie = document.cookie;
 	console.log( '쿠키는 다음과 같습니다: '+document.cookie);
-	var dataStr = cookie.match(/data=([;]+)/);
+	var dataStr = cookie.match(/data=([^;]+)/);
 	if ( dataStr != null ) {
 		console.log( '쿠키에서 data를 가져왔습니다: '+dataStr[1]);
 		data = convertHexStringToData( dataStr[1] );
 	}
-	else{
+	else {
 		console.log( '쿠키에서 data를 가져오는데 실패하였습니다.');
 		data = newData();
 	}

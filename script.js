@@ -164,13 +164,13 @@ var initializeCard = function( $card ) {
 
 var onChangedData = function () {
 	// 계산
-	console.log('cookie');
+	console.log('쿠키를 씁니다.');
 	var hexData = getHexStringData();
 	var d = new Date();
 	var exdays = 30;
 	d.setTime(d.getTime() + (exdays*24*60*60*1000));
 	document.cookie = "data="+hexData+';expires=' + d.toUTCString() + ';';
-	console.log(document.cookie);
+	console.log('쿠키가 다음과 같이 쓰였습니다: '+document.cookie);
 	// 디자인 변경
 	// 속성
 	$('.deck')
@@ -203,12 +203,18 @@ var onChangedData = function () {
 $( document ).ready( function() {
 	$cardProto = $('.input .card').clone();
 
+	console.log( '쿠키가 있는지 확인합니다.' )
 	var cookie = document.cookie;
-	dataStr = cookie.match(/data=([;]+)/);
-	if ( dataStr != null )
+	console.log( '쿠키는 다음과 같습니다: '+document.cookie);
+	var dataStr = cookie.match(/data=([;]+)/);
+	if ( dataStr != null ) {
+		console.log( '쿠키에서 data를 가져왔습니다: '+dataStr[1]);
 		data = convertHexStringToData( dataStr[1] );
-	else
+	}
+	else{
+		console.log( '쿠키에서 data를 가져오는데 실패하였습니다.');
 		data = newData();
+	}
 	onChangedData();
 
 	for ( var i in idols ) {

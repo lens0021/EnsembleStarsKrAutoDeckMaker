@@ -114,6 +114,7 @@ div.header h2 {
 }
 
 .units {
+	font-size: 0.9em;
 	overflow: hidden;
 }
 
@@ -122,10 +123,10 @@ div.header h2 {
 }
 
 .unit:not(.main-unit) {
-	font-size: 0.9rem;
+	font-size: 0.8em;
 }
 
-.unit {
+.unit {	
 	display: block;
 	width: 100%;
 }
@@ -199,6 +200,7 @@ div.header h2 {
 }
 
 .unit .card .ability {
+	font-size: .8em;
 	margin: auto;
 	text-align: center;
 }

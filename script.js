@@ -176,7 +176,6 @@ function writeCookie() {
 var $cardProto;
 
 var pickerIndex = undefined;
-
 function openIdolPicker( index ) {
 	pickerIndex = index;
 	$('.overlay').toggle( true );
@@ -184,7 +183,7 @@ function openIdolPicker( index ) {
 
 function initializeCard( $card ) {
 	var index = $card.prevAll().length;
-	log(index+'번 카드를 초기화합니다.');
+	// log(index+'번 카드를 초기화합니다.');
 
 	$card.find('.remove-card').click( function( event ) {
 		event.preventDefault();
@@ -193,7 +192,7 @@ function initializeCard( $card ) {
 
 		log(index+'번 카드를 없앱니다.');
 		makerData.removeCardAt( index );
-		refreshElement();
+		refreshPanels();
 	} );
 
 	$card.find('.card-thumb').click( function( event ) {
@@ -216,32 +215,20 @@ function initializeCard( $card ) {
 				makerData.addCard();
 				$("input[type='number']").eq(index).focus().select();
 			}
-			refreshElement();
+			refreshPanels();
 		 }
 	 });
-	var cnt=0;
+
 	$card.find("input[type='number']").on( 'input', function(e) {
 		var type = abilityNameFromNumber[$(this).prevAll().length];
 		var card = makerData.getCard( index );
 		card[type] = $(this).val();
 		makerData.setCardAt( index, card );
-		refreshElement();
+		refreshPanels();
 	});
 };
 
-function refreshElement() {
-	writeCookie();
-	log('패널을 새로고침합니다.');
-
-	var deckTotalAbility = 0;
-	var mainUnitTotalAbility = 0;
-	var subUnitTotalAbility = 0;
-	var secondSubUnitTotalAbility = 0;
-	var mainUnitSkill = 0;
-	var subUnitSkill = 0;
-	var secondSubUnitSkill = 0;
-	
-	// 계산
+function bestDeck() {
 	var deck = [ [/* [ '츠카사', 134 ], ['미도리', 155 ] */], [], [] ];
 	var type = makerData.getTypeOfDeck();
 	var idolList = [];
@@ -254,6 +241,22 @@ function refreshElement() {
 	for ( var i = 0; i < makerData.getActiveUnitNum() * 5; i++ ) {
 		deck[i] = idolList[i];
 	}
+	return deck;
+}
+
+function refreshPanels() {
+	writeCookie();
+	log('패널을 새로고침합니다.');
+
+	var deckTotalAbility = 0;
+	var mainUnitTotalAbility = 0;
+	var subUnitTotalAbility = 0;
+	var secondSubUnitTotalAbility = 0;
+	var mainUnitSkill = 0;
+	var subUnitSkill = 0;
+	var secondSubUnitSkill = 0;
+	
+	var deck = bestDeck();
 
 	// 총합 계산
 	for ( var i = 0; i < makerData.getActiveUnitNum() * 5; i++ ) {
@@ -352,7 +355,7 @@ $( document ).ready( function() {
 		// 99999999
 		makerData = new DeckMakerData('0023120b000000000021683170000000000216430c00000000002019012000000000016740090000000000154840600000000001420611000000000013508150000000000129981c000000000012044020000000000105260e000000000009867010000000000090940a00000000000888617000000000007939180000000000071510f0000000000067401c00000000000673003000000000006601');
 	}
-	refreshElement();
+	refreshPanels();
 
 	for ( var i in idolNames ) {
 		var $idol = $('<li></li>').addClass( 'idol-picker-idol' ),
@@ -363,7 +366,7 @@ $( document ).ready( function() {
 			card['idol'] = index;
 			makerData.setCardAt( pickerIndex, card );
 			$('.overlay').toggle( false );
-			refreshElement();
+			refreshPanels();
 		} ).html(idolNames[i]);
 		$idol.append( $anchor );
 		$idol.appendTo($('.idolPicker ol'));
@@ -374,25 +377,25 @@ $( document ).ready( function() {
 		index = $(this).parent().parent().prevAll().length;
 
 		makerData.setActiveUnitNum( index + ($(this).hasClass('active')?0:1) );
-		refreshElement();
+		refreshPanels();
 	} );
 
 	$('#deck-option-dance a').click( function(event) {
 		event.preventDefault();
 		makerData.setTypeOfDeck( 'dance' );
-		refreshElement();
+		refreshPanels();
 	} );
 
 	$('#deck-option-vocal a').click( function(event) {
 		event.preventDefault();
 		makerData.setTypeOfDeck( 'vocal' );
-		refreshElement();
+		refreshPanels();
 	} );
 
 	$('#deck-option-performance a').click( function(event) {
 		event.preventDefault();
 		makerData.setTypeOfDeck( 'performance' );
-		refreshElement();
+		refreshPanels();
 	} );
 
 	$('.deck-total-ability a').click( function( event ) {
@@ -404,13 +407,13 @@ $( document ).ready( function() {
 			makerData.setTypeOfDeck( 'performance' );
 		else if ( crtType == 'performance' )
 			makerData.setTypeOfDeck( 'dance' );
-		refreshElement();
+		refreshPanels();
 	});
 
 	$('.add-card a').click( function(event) {
 		event.preventDefault();
 		makerData.addCard();
-		refreshElement();
+		refreshPanels();
 	});
 
 	$('.overlay').click( function(event) {
@@ -424,7 +427,7 @@ $( document ).ready( function() {
 		if ( str != null &&  str != '' ){
 			makerData = new DeckMakerData(str);
 			writeCookie();
-			refreshElement();
+			refreshPanels();
 		}
 	});
 

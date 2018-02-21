@@ -336,8 +336,8 @@ $( document ).ready( function() {
 	var cookie = document.cookie;
 	if ( cookie != undefined && cookie != '' ) {
 		log( '쿠키는 다음과 같습니다: '+cookie);
-		var dataStr = cookie.match(/makerData=([^;]+)/);
-		if ( dataStr != null && dataStr != '' ) {
+		var dataStr = cookie.match(/deckMakerData=([^;]+)/);
+		if ( dataStr != null ) {
 			log( '쿠키에서 data를 가져왔습니다: '+dataStr[1]);
 			makerData = new DeckMakerData( dataStr[1] );
 		}

@@ -63,14 +63,12 @@ div.header h2 {
 	font-size: 1.3em;
 	position: relative;
 	margin: auto;
-	width: 28em;
-	height: 19em;
+	height: 17em;
 }
 
 .deck {
 	position: absolute;
 	overflow: hidden;
-	width:21em;
 }
 
 .deck li {
@@ -78,7 +76,7 @@ div.header h2 {
 	margin: .2em;
 }
 
-.deck-total-ability {
+.deck-summary {
 	padding-left: 1em;
 }
 
@@ -124,7 +122,7 @@ div.header h2 {
 }
 
 .unit:not(.main-unit) {
-	font-size: 0.8rem;
+	font-size: 0.9rem;
 }
 
 .unit {
@@ -161,7 +159,8 @@ div.header h2 {
 	background-color: #f2b119;
 }
 
-.unit-total-ability {
+.unit-summary {
+	width: 7.5em;
 	display: inline-block;
 	font-size: .9em;
 }
@@ -175,10 +174,28 @@ div.header h2 {
 }
 
 .unit .card .thumb {
+	position: relative;
 	width: 3em;
 	height: 3em;
 	border-radius: .5em;
 	background-color: lightgray;
+}
+
+.unit .card .thumb img {
+	position: absolute;
+	width: 3em;
+	height: 3em;
+	border-radius: .5em;
+	background-color: lightgray;
+}
+
+.unit .card .thumb p {
+	position: absolute;
+	margin: 0;
+	left: 0;
+	right: 0;
+	line-height: 3em;
+	text-align: center;
 }
 
 .unit .card .ability {
@@ -224,9 +241,11 @@ div.header h2 {
 
 .deck-option {
 	position: absolute;
-	left: 21em;
 	width: 6em;
+	top: 0;
 	right: 0;
+	bottom: 0;
+	margin: auto;
 	margin-left: 1em;
 }
 
@@ -342,13 +361,14 @@ div.header h2 {
 }
 
 .footer {
-	margin-bottom: 3rem;
+	padding-top: 1em;
+	margin-bottom: 3em;
 	border-top: 0.05rem solid lightgray;
-	font-size: .8rem;
 }
 
-.footer > p {
-	display: inline-block;
+.footer p {
+	margin-top: 0em;
+	font-size: .8em;
 }
 
 .overlay {
@@ -410,7 +430,7 @@ div.header h2 {
 	}
 	.display {
 		font-size: 1em;
-		width: 22rem;
+		height: 20em;
 	}
 	.deck {
 		margin: auto;

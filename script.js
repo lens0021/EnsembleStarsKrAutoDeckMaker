@@ -1,14 +1,13 @@
-var log = function( msg ) {
+function log( msg ) {
 	var showLog = true;
 	if ( showLog ) console.log( msg );
 }
 
-const abilityFromNumber = [ 'dance', 'vocal', 'performance' ];
-const typeFromNumber = abilityFromNumber;
-const typeToNumber = { dance: 0, vocal: 1, performance: 2 };
-const maxCardNumber = 200;
+// 상수들
+const maxCardNum = 200;
+const minCardNum = 5*3;
 
-const idols = [
+const idolNames = [
 	'테토라', '하지메', '토모야', '히나타', '미도리',
 	'토리', '시노부', '유우타', '미츠루', '츠카사',
 	'스바루', '호쿠토', '마코토', '소마', '아도니스',
@@ -17,137 +16,184 @@ const idols = [
 	'쿠로', '와타루', '카나타', '레이', '나즈나'
 ];
 
-const minCardNum = 5;
+const abilityNameFromNumber = [ 'dance', 'vocal', 'performance' ];
+const typeOfDeckFromNumber = abilityNameFromNumber;
+const typeOfCardFromNumber = typeOfDeckFromNumber;
+const NumberFromDeckType = { dance: 0, vocal: 1, performance: 2 };
+const NumberFromCardType = NumberFromDeckType;
 
-var data = undefined;
+var makerData = undefined;
 
-var newData = function() {
-	var data = new Uint32Array(2+4*maxCardNumber);
-	data[1] = 5;
-	for ( var i=2; i < 1+data[1]*4; i+=4 )
-		data[i] = ~0;
-	return data;
-}
+function numberToHexString( num, bit ) {
+	var digits = bit / 4;
 
-var getData = function( request ) {
-	if ( request === 'version' )
-		return data[0] >>> 24;
-	else if ( request === 'type' )
-		return typeFromNumber[(data[0] >>> 20) & 15];
-	else if ( request === 'activeUnitNum' )
-		return ((data[0] >>> 16 ) & 15)+1;
-	else if ( request === 'cardNum' ) {
-		return data[1];
-	}
-	else {
-		if ( data[2+request*4] == ~0 )
-			return undefined;
-		return {
-			idol: idols[data[2+request*4]],
-			dance: data[2+request*4+1],
-			vocal: data[2+request*4+2],
-			performance: data[2+request*4+3]
-		};
-	}
-}
-
-var setData = function( type, val ) {
-	if ( type === 'version' )
-		data[0] = (data[0] & ~(255<<24)) + (val<<24);
-	else if ( type === 'type' )
-		data[0] = (data[0] & ~(15<<20)) + (typeToNumber[val]<<20);
-	else if (type === 'activeUnitNum' )
-		data[0] = (data[0] & ~(15<<16)) + ((val-1)<<16);
-	else if( typeof(type) == 'number' ){
-		if ( val['idol'] != undefined )
-			data[2+(type*4)] = val['idol'];
-		if ( val['dance'] != undefined )
-			data[2+(type*4)+1] = val['dance'];
-		if ( val['vocal'] != undefined )
-			data[2+(type*4)+2] = val['vocal'];
-		if ( val['performance'] != undefined )
-			data[2+(type*4)+3] = val['performance'];
+	var zeros = '';
+	switch ( digits ) {
+		case 4: zeros = '0000'; break;
+		case 8: zeros = '00000000'; break;
+		case 12: zeros = '000000000000'; break;
+		case 16: zeros = '0000000000000000'; break;
+		case 20: zeros = '00000000000000000000'; break;
+		default: 
+			for ( var ct = 0; ct < digits ; ct++ ) zeros += '0';
 	}
 
-	onChangedData();
+	return ( zeros+num.toString(16) ).substr( -digits, digits );
 }
 
-var getHexStringData = function() {
-	var str = '';
-	for ( var i=0; i < 2+data[1]*4; i++ ) {
-		str += ('00000000' + data[i].toString(16)).substr(-8, 8);
+function numberFromHexStringAt( str, start, length ) {
+	return parseInt( str.substring( start, start+length ), 16 );
+}
+
+function DeckMakerData( code ) {
+	var emptyCardCode = numberToHexString( 0xff, 4*2 )
+		+numberToHexString( 0, 4*5*3 );
+
+	function stringIndexOfNthCard( n ) {
+		return 6+(n*(2+5*3));
 	}
 
-	return str;
-}
+	this.getVersion = function() {
+		return numberFromHexStringAt( this.code, 0, 2 );
+	};
+	this.getTypeOfDeck = function() {
+		return typeOfDeckFromNumber[numberFromHexStringAt( this.code, 2, 1 )];
+	};
+	this.getActiveUnitNum = function() {
+		return numberFromHexStringAt( this.code, 3, 1 );
+	};
+	this.getCardNum = function() {
+		return numberFromHexStringAt( this.code, 4, 2 );
+	};
+	this.getCard = function( i ) {
+		var cardNum = this.getCardNum();
 
-var convertHexStringToData = function( str ) {
-	var data = new Uint32Array(2+4*maxCardNumber);
-	var j=0;
-	for( var i=0; i < str.length; i+=8 ) {
-		data[j++] = parseInt( str.substring(i, i+8), 16 );
+		if ( i > cardNum - 1 ) return undefined;
+
+		var firstCharIndex = stringIndexOfNthCard( i );
+		var idolCode = numberFromHexStringAt( this.code, firstCharIndex, 2 );
+		return card = {
+			idol: idolCode != 0xff ? idolCode : null,
+			dance: numberFromHexStringAt( this.code, firstCharIndex+2, 5 ),
+			vocal: numberFromHexStringAt( this.code, firstCharIndex+2+5, 5 ),
+			performance: numberFromHexStringAt( this.code, firstCharIndex+2+5*2, 5 ),
+		}
+	};
+
+	this.getCode = function() {
+		return this.code;
 	}
 
-	return data;
+	this.setVersion = function( version ) {
+		this.code = numberToHexString( version, 4*2 )
+			+this.code.substring( 2 );
+		this.onChangedData();
+	};
+	this.setTypeOfDeck = function( type ) {
+		this.code = this.code.substring( 0, 2 )
+			+numberToHexString( NumberFromDeckType[type], 4 )
+			+this.code.substring( 3 );
+		this.onChangedData();
+	};
+	this.setActiveUnitNum = function( num ) {
+		this.code = this.code.substring( 0, 3 )
+			+numberToHexString( num, 4 )
+			+this.code.substring( 4 );
+		this.onChangedData();
+	};
+	this.setCardNum = function( num ) {
+		this.code = this.code.substring( 0, 4 )
+			+numberToHexString( num, 4*2 )
+			+this.code.substring( 6 );
+		this.onChangedData();
+	};
+	this.addCard = function( card ) {
+		if ( card == undefined )
+			this.code += emptyCardCode;
+		else {
+			this.code += numberToHexString( card['idol'] != null ? card['idol'] : 0xff, 4*2 )
+			+numberToHexString( card['dance'], 4*5 )
+			+numberToHexString( card['vocal'], 4*5 )
+			+numberToHexString( card['performance'], 4*5 );
+		}
+		this.setCardNum( this.getCardNum() + 1 );
+		this.onChangedData();
+	};
+	this.setCardAt = function( i, card ) {
+		var firstCharIndex = stringIndexOfNthCard( i );
+		var cardCode = '';
+		if ( card == null )
+			cardCode = emptyCardCode;
+		else {
+			cardCode = numberToHexString( card['idol'] != null ? card['idol'] : 0xff, 4*2 )
+			+numberToHexString( card['dance'], 4*5 )
+			+numberToHexString( card['vocal'], 4*5 )
+			+numberToHexString( card['performance'], 4*5 );
+		}
+		log(cardCode);
+		this.code = this.code.substring(0, firstCharIndex)
+			+cardCode
+			+this.code.substring( stringIndexOfNthCard ( i+1 ) );
+		this.onChangedData();
+	};
+	this.removeCardAt = function( i ) {
+		this.code = this.code.substring( 0, stringIndexOfNthCard( i ) )
+			+this.code.substring( stringIndexOfNthCard ( i+1 ) );
+
+		this.setCardNum( this.getCardNum() - 1 );
+		this.onChangedData();
+	};
+	this.onChangedData = function() {
+		// todo
+	};
+
+	if ( code != null && code != '' ) {
+		this.code = code;
+		return;
+	}
+	this.code = '000000';
+	this.setVersion( 0 );
+	this.setTypeOfDeck( 'dance' );
+	this.setActiveUnitNum( 1 );
+
+	for ( var i=0; i < minCardNum; i++ )
+		this.addCard();
 }
 
-var writeCookie = function () {
-	log('쿠키를 씁니다.');
-	var hexData = getHexStringData();
+function writeCookie() {
+	var code = makerData.getCode();
 	var d = new Date();
 	var exdays = 30;
-	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	d.setTime( d.getTime() + (exdays*24*60*60*1000) );
 
-	var cookie = 'data='+hexData+';expires=' + d.toUTCString() + ';';
+	var cookie = 'deckMakerData='+code+';expires=' + d.toUTCString() + ';';
 
-	log('다음과 같은 쿠키를 씁니다: '+cookie);
+	log( '다음과 같은 쿠키를 씁니다: '+cookie );
 	document.cookie = cookie;
-	log('쿠키가 다음과 같이 쓰였습니다: '+document.cookie);
-}
-
-var removeCardDataAt = function( i ) {
-	data[1]--;
-	for ( var mid = 2+i*4; mid <= 2+(data[1]+1)*4; mid++ ) {
-		data[mid] = data[mid+4];
-	}
-	onChangedData();
-}
-
-var addCardData = function( card ) {
-	log('카드 추가(카드 수:'+data[1]+')');
-	if ( card === undefined ) {
-		log(data[1]);
-		data[2 + data[1]*4] = ~0;
-		log(data);
-	} else {
-		data[2 + data[1]*4] = card['idol'];
-		data[2 + data[1]*4+1] = card['dance'];
-		data[2 + data[1]*4+2] = card['vocal'];
-		data[2 + data[1]*4+3] = card['performance'];
-	}
-	data[1]++;
-	onChangedData();
+	log( '쿠키가 다음과 같이 쓰였습니다: '+document.cookie );
 }
 
 var $cardProto;
 
 var pickerIndex = undefined;
-var openIdolPicker = function( index ) {
+
+function openIdolPicker( index ) {
 	pickerIndex = index;
 	$('.overlay').toggle( true );
 };
 
-var initializeCard = function( $card ) {
+function initializeCard( $card ) {
 	var index = $card.prevAll().length;
 	log(index+'번 카드를 초기화합니다.');
 
 	$card.find('.remove-card').click( function( event ) {
 		event.preventDefault();
-		if ( getData('cardNum') <= 5 )
+		if ( makerData.getCardNum() <= minCardNum )
 			return;
 
 		log(index+'번 카드를 없앱니다.');
-		removeCardDataAt( index );
+		makerData.removeCardAt( index );
+		refreshElement();
 	} );
 
 	$card.find('.card-thumb').click( function( event ) {
@@ -163,29 +209,93 @@ var initializeCard = function( $card ) {
 
 	$card.find("input[type='number']").keydown(function (e) {
 		if (e.which === 13) {
-			 var index = $("input[type='number']").index(this) + 1;
-			 if ( index <= $("input[type='number']").length - 1 )
-			 	$("input[type='number']").eq(index).focus().select();
-			 else {
-			 	addCardData();
-			 	$("input[type='number']").eq(index).focus().select();
-			 }
+			var index = $("input[type='number']").index(this) + 1;
+			if ( index <= $("input[type='number']").length - 1 )
+				$("input[type='number']").eq(index).focus().select();
+			else {
+				makerData.addCard();
+				$("input[type='number']").eq(index).focus().select();
+			}
+			refreshElement();
 		 }
 	 });
 	var cnt=0;
 	$card.find("input[type='number']").on( 'input', function(e) {
-		var type = abilityFromNumber[$(this).prevAll().length];
-		var card = {};
+		var type = abilityNameFromNumber[$(this).prevAll().length];
+		var card = makerData.getCard( index );
 		card[type] = $(this).val();
-		setData( index, card );
+		makerData.setCardAt( index, card );
+		refreshElement();
 	});
 };
 
-var onChangedData = function ( needToWriteCookie = true ) {
+function refreshElement() {
+	log('패널을 새로고침합니다.');
+	log(makerData.code);
+
+	var deckTotalAbility = 0;
+	var mainUnitTotalAbility = 0;
+	var subUnitTotalAbility = 0;
+	var secondSubUnitTotalAbility = 0;
+	var mainUnitSkill = 0;
+	var subUnitSkill = 0;
+	var secondSubUnitSkill = 0;
+	
 	// 계산
-	// 쿠키 쓰기
-	if ( needToWriteCookie )
-		writeCookie();
+	var deck = [ [/* [ '츠카사', 134 ], ['미도리', 155 ] */], [], [] ];
+	var type = makerData.getTypeOfDeck();
+	var idolList = [];
+	for ( var i = 0; i < makerData.getCardNum(); i++ ) {
+		var card = makerData.getCard( i );
+		idolList.push( [ card['idol'], card[type] ] );
+	}
+	idolList.sort( function(a, b) { return b[1] - a[1]; } );
+
+	for ( var i = 0; i < makerData.getActiveUnitNum() * 5; i++ ) {
+		deck[i] = idolList[i];
+	}
+
+	// 총합 계산
+	for ( var i = 0; i < makerData.getActiveUnitNum() * 5; i++ ) {
+		if ( i < 5 )
+			mainUnitTotalAbility += deck[i][1];
+		else if ( i < 10 )
+			subUnitTotalAbility += deck[i][1];
+		else
+			secondSubUnitTotalAbility += deck[i][1];			
+	}
+
+	deckTotalAbility = mainUnitTotalAbility
+		+ subUnitTotalAbility
+		+ secondSubUnitTotalAbility;
+	if ( makerData.getActiveUnitNum() == 2 )
+		deckTotalAbility *= 1.5;
+	else if ( makerData.getActiveUnitNum() == 3 )
+		deckTotalAbility *= 2;
+
+
+	// 계산 결과 표시
+	$('#deck-total-ability').html(deckTotalAbility);
+	var $unitTotals = $('.unit-total-ability');
+	$unitTotals.eq(0).html( mainUnitTotalAbility );
+	$unitTotals.eq(1).html( subUnitTotalAbility );
+	$unitTotals.eq(2).html( secondSubUnitTotalAbility );
+
+	var $unitSkill = $('.unit-skill-number');
+	$unitSkill.eq(0).html( mainUnitSkill);
+	$unitSkill.eq(1).html( subUnitSkill );
+	$unitSkill.eq(2).html( secondSubUnitSkill );
+
+	$('.deck .card').each( function( i ) {
+
+		if ( deck[i] == undefined ) {
+			$(this).find('.name').html('');
+			$(this).find('.ability').html('0');
+		} else {
+			$(this).find('.name').html( deck[i][0] != null ? idolNames[deck[i][0]] : deck[i][0] );
+			$(this).find('.ability').html( deck[i][1] );
+		}
+	} );
 	
 	// 디자인 변경
 	// 속성
@@ -193,33 +303,30 @@ var onChangedData = function ( needToWriteCookie = true ) {
 		.removeClass( 'dance' )
 		.removeClass( 'vocal' )
 		.removeClass( 'performance' )
-		.addClass( getData('type') );
+		.addClass( makerData.getTypeOfDeck() );
 	// 유닛
-	$('#unit2-switch').toggleClass( "active", getData('activeUnitNum') >= 2 );
-	$('#unit3-switch').toggleClass( "active", getData('activeUnitNum') >= 3 );
+	$('#unit2-switch').toggleClass( "active", makerData.getActiveUnitNum() >= 2 );
+	$('#unit3-switch').toggleClass( "active", makerData.getActiveUnitNum() >= 3 );
 
-	log( '카드가 ' + getData( 'cardNum' ) + '개 있습니다.');
-	var ct = 0;
-	while ( getData('cardNum') < $('.input .card').length ) {
+	log( '카드가 ' + makerData.getCardNum() + '개 있습니다.');
+	while ( makerData.getCardNum() < $('.input .card').length ) {
 		$('.input .card:last').remove();
-		if ( ct++ > maxCardNumber*1.5 ) break;
 	}
-	ct = 0;
-	while ( getData('cardNum') > $('.input .card').length ) {
+	while ( makerData.getCardNum() > $('.input .card').length ) {
 		var clone = $cardProto.clone().insertBefore( $('.add-card') );
 		initializeCard( clone );
-		if ( ct++ > maxCardNumber*1.5 ) break;
 	}
 
 	$('.input .card').each( function( i ) {
-		$(this).find('.card-thumb').html( getData(i)['idol'] === undefined ? '' : getData(i)['idol'] );
-		$(this).find('.card-dance').attr('value', getData(i)['dance'])
-		$(this).find('.card-vocal').attr('value', getData(i)['vocal'])
-		$(this).find('.card-performance').attr('value', getData(i)['performance'])
+		var card = makerData.getCard( i );
+		$(this).find('.card-thumb').html( card['idol'] !== null ? idolNames[card['idol']] : '' );
+		$(this).find('.card-dance').attr('value', card['dance'])
+		$(this).find('.card-vocal').attr('value', card['vocal'])
+		$(this).find('.card-performance').attr('value', card['performance'])
 	} );
 
-	$('.input .card .remove-card').toggleClass( "disabled", getData('cardNum') <= minCardNum );
-};
+	$('.input .card .remove-card').toggleClass( "disabled", makerData.getCardNum() <= minCardNum );
+}
 
 $( document ).ready( function() {
 	$cardProto = $('.input .card').clone();
@@ -227,70 +334,83 @@ $( document ).ready( function() {
 
 	log( '쿠키가 있는지 확인합니다.' )
 	var cookie = document.cookie;
-	// cookie = 'data=002200000000001d0000000b00001b1400000f69000054b300000017000023cb0000263d0000548b0000000c0000249c000016ad00004ede00000012000011b0000017b900004164000000060000177f00001c50000039cc00000011000018af00001f54000034c40000001500000be200001442000032c60000001c0000134e00001c5b00002f0c0000000200002c5d0000445f0000291e0000000e00003c8f00001ff20000268b00000001000028390000173a000023860000000a000015c600002d56000022b6000000170000249f00000d9e00001f030000000900002fbb00001a8700001e250000001800002bc0000019d000001bef0000000f0000323a0000120800001a540000001c0000208500003fb000001a4a00000003000023fb00001214000019c90000000d00000a6700000ba6000019890000000400001b1f00002f2200001967000000030000231e0000273b000017dc0000001c0000221d000035f9000016970000000c000019e50000194d000016100000000f000015c2000023aa0000155e0000000f0000096900000992000016b00000001000002d9e0000139d000014960000000200002f260000175a000014460000000d0000087700000c6e000013ef0000001400000c370000098300001353';
-	log( '쿠키는 다음과 같습니다: '+cookie);
-	var dataStr = cookie.match(/data=([^;]+)/);
-	if ( dataStr != null ) {
-		log( '쿠키에서 data를 가져왔습니다: '+dataStr[1]);
-		data = convertHexStringToData( dataStr[1] );
-		onChangedData( false );
+	if ( cookie != undefined && cookie != '' ) {
+		log( '쿠키는 다음과 같습니다: '+cookie);
+		var dataStr = cookie.match(/makerData=([^;]+)/);
+		if ( dataStr != null && dataStr != '' ) {
+			log( '쿠키에서 data를 가져왔습니다: '+dataStr[1]);
+			makerData = new DeckMakerData( dataStr[1] );
+		}
+		else {
+			log( '쿠키에서 data를 가져오는데 실패하였습니다.');
+			makerData = new DeckMakerData();
+		}
 	}
 	else {
-		log( '쿠키에서 data를 가져오는데 실패하였습니다.');
-		data = newData();
-		onChangedData();
+		log( '쿠키가 없습니다.');
+		makerData = new DeckMakerData();
 	}
-	var ct =0;
+	// 99999999
+	makerData = new DeckMakerData('0023120b000000000021683170000000000216430c00000000002019012000000000016740090000000000154840600000000001420611000000000013508150000000000129981c000000000012044020000000000105260e000000000009867010000000000090940a00000000000888617000000000007939180000000000071510f0000000000067401c00000000000673003000000000006601');
+	refreshElement();
 
-	for ( var i in idols ) {
+	for ( var i in idolNames ) {
 		var $idol = $('<li></li>').addClass( 'idol-picker-idol' ),
 		$anchor = $('<a></a>').attr( 'href','#' ).click( function( e ) {
 			var index = $(this).parent().prevAll().length;
 			event.preventDefault();
-			setData( pickerIndex, { idol: index } );
+			var card = makerData.getCard( pickerIndex );
+			card['idol'] = index;
+			makerData.setCardAt( pickerIndex, card );
 			$('.overlay').toggle( false );
-		} ).html(idols[i]);
+			refreshElement();
+		} ).html(idolNames[i]);
 		$idol.append( $anchor );
 		$idol.appendTo($('.idolPicker ol'));
-		if(ct++>50) break;
 	}
 
 	$('.switch').click( function(event) {
 		event.preventDefault();
 		index = $(this).parent().parent().prevAll().length;
 
-		setData( 'activeUnitNum', index + ($(this).hasClass('active')?0:1) );
+		makerData.setActiveUnitNum( index + ($(this).hasClass('active')?0:1) );
+		refreshElement();
 	} );
 
 	$('#deck-option-dance a').click( function(event) {
 		event.preventDefault();
-		setData( 'type', 'dance' );
+		makerData.setTypeOfDeck( 'dance' );
+		refreshElement();
 	} );
 
 	$('#deck-option-vocal a').click( function(event) {
 		event.preventDefault();
-		setData( 'type', 'vocal' );
+		makerData.setTypeOfDeck( 'vocal' );
+		refreshElement();
 	} );
 
 	$('#deck-option-performance a').click( function(event) {
 		event.preventDefault();
-		setData( 'type', 'performance' );
+		makerData.setTypeOfDeck( 'performance' );
+		refreshElement();
 	} );
 
 	$('.deck-total-ability a').click( function( event ) {
 		event.preventDefault();
-		var crtType = getData( 'type' );
+		var crtType = makerData.getTypeOfDeck();
 		if ( crtType == 'dance' )
-			setData( 'type', 'vocal' );
+			makerData.setTypeOfDeck( 'vocal' );
 		if ( crtType == 'vocal' )
-			setData( 'type', 'performance' );
+			makerData.setTypeOfDeck( 'performance' );
 		else if ( crtType == 'performance' )
-			setData( 'type', 'dance' );
+			makerData.setTypeOfDeck( 'dance' );
+		refreshElement();
 	});
 
 	$('.add-card a').click( function(event) {
 		event.preventDefault();
-		addCardData();
+		makerData.addCard();
+		refreshElement();
 	});
 
 	$('.overlay').click( function(event) {
@@ -302,15 +422,16 @@ $( document ).ready( function() {
 
 		var str = window.prompt("「내보내기」한 텍스트를 붙여넣어 주세요.","");
 		if ( str != null &&  str != '' ){
-			data = convertHexStringToData(str);
-			onChangedData( false );
+			makerData = new DeckMakerData(str);
+			writeCookie();
+			refreshElement();
 		}
 	});
 
 	$('#export').click( function(event) {
 		event.preventDefault();
 
-		prompt("다음을 「복사」해서 저장하세요.", getHexStringData());
+		prompt("다음을 「복사」해서 저장하세요.", makerData.getCode());
 	});
 
 	$('.deck').toggleClass('loading');

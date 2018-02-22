@@ -102,11 +102,11 @@ div.header h2 {
 }
 
 .deck.dance .type {
-	background-color: #00b1ec;
+	background-color: #ee5b5b;
 }
 
 .deck.vocal .type {
-	background-color: #ee5b5b;
+	background-color: #00b1ec;
 }
 
 .deck.performance .type {
@@ -148,15 +148,15 @@ div.header h2 {
 	color: white;
 }
 
-.deck.dance .unit-name {
-	background-color: #00b1ec;
-}
-
-.deck.vocal .unit-name {
+.deck.dance .unit.active .unit-name {
 	background-color: #ee5b5b;
 }
 
-.deck.performance .unit-name {
+.deck.vocal .unit.active .unit-name {
+	background-color: #00b1ec;
+}
+
+.deck.performance .unit.active .unit-name {
 	background-color: #f2b119;
 }
 
@@ -225,11 +225,11 @@ div.header h2 {
 	background-color: white;
 }
 
-.switch.active {
+.unit.active .switch {
 	background-color: lightblue;
 }
 
-.switch.active .switch-thumb {
+.unit.active .switch-thumb {
 	margin-left: 1.9em;
 }
 
@@ -261,11 +261,11 @@ div.header h2 {
 }
 
 .deck-option li.dance a {
-	background-color: #00b1ec;
+	background-color: #ee5b5b;
 }
 
 .deck-option li.vocal a {
-	background-color: #ee5b5b;
+	background-color: #00b1ec;
 }
 
 .deck-option li.performance a {
@@ -368,7 +368,7 @@ div.header h2 {
 
 .export textarea {
 	width: 100%;
-	height: 4em;
+	height: 5em;
 }
 
 .footer {
@@ -395,10 +395,10 @@ div.header h2 {
 .idolPicker {
 	position: fixed;
 	max-width: 50em;
-	top: 2em;
-	right: 5em;
-	bottom: 2em;
-	left: 5em;
+	top: 1em;
+	right: 2em;
+	bottom: 1em;
+	left: 2em;
 	background-color: white;
 	margin: auto;
 	border-radius: 1em;
@@ -406,30 +406,21 @@ div.header h2 {
 
 .idolPicker ol {
 	list-style-type: none;
-    -webkit-column-count: 4; /* Chrome, Safari, Opera */
-    -moz-column-count: 4; /* Firefox */
-    column-count: 4;
     padding: 1em;
 }
 
 .idolPicker ol li {
-	-webkit-column-break-inside: avoid;
-	          page-break-inside: avoid;
-	               break-inside: avoid;
 	margin: .5em auto;
-}
-
-.idolPicker ol li:first-child {
-	margin-top: 0;
 }
 
 .idolPicker li a {
 	display: block;
-	margin: auto;
+	float: left;
+	margin: .2em;
 	border-radius: .5em;
 	width: 4em;
 	height: 1.1em;
-	padding: .5em;
+	padding: .4em;
 	color: white;
 	background-color: gray;
 	text-align: center;

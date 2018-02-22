@@ -272,7 +272,7 @@ function refreshPanels() {
 
 	var deckTotalAbility = 0;
 	var unitTotalAbility = [ 0, 0, 0 ];
-	var unitSkillNum = [ 0, 0, 9 ];
+	var unitSkillNum = [ 0, 0, 0 ];
 	
 	deck = makeBestDeck( makerData.getActiveUnitNum() );
 
@@ -282,14 +282,21 @@ function refreshPanels() {
 			unitTotalAbility[i] += deck[i][j][1];
 	}
 
-	deckTotalAbility = unitTotalAbility[0]
-		+ unitTotalAbility[1]
-		+ unitTotalAbility[2]
-	if ( makerData.getActiveUnitNum() == 2 )
-		deckTotalAbility *= 1.5;
-	else if ( makerData.getActiveUnitNum() == 3 )
-		deckTotalAbility *= 2;
-
+	if ( makerData.getActiveUnitNum() == 1 ) {
+		deckTotalAbility = 
+			unitTotalAbility[0];
+	} else if ( makerData.getActiveUnitNum() == 2 ) {
+		deckTotalAbility = 
+			Math.ceil( unitTotalAbility[0] *1.5, 0 )
+			+ Math.ceil( unitTotalAbility[1] *1.5, 0 )
+			+ Math.ceil( unitTotalAbility[2] *1.5, 0 );
+	}
+	else if ( makerData.getActiveUnitNum() == 3 ) {
+		deckTotalAbility = 
+			unitTotalAbility[0]*2
+			+ unitTotalAbility[1]*2
+			+ unitTotalAbility[2]*2;
+	}
 
 	// 계산 결과 표시
 	$('#deck-total-ability').html(deckTotalAbility);

@@ -1,0 +1,82 @@
+a {
+	color: black;
+	text-decoration: none;
+}
+
+.input {
+	text-align: center;
+}
+
+.input .card, .input .add-card {
+	position: relative;
+	display: inline-block;
+	width: 11em;
+	height: 4.5em;
+	border-radius: .5em;
+	background-color: lightgray;
+	margin: .1em;
+}
+
+.remove-card {
+	font-size: 2em;
+	position: absolute;
+	display: block;
+	right: 0.1em;
+	top: 0;
+	bottom: 0;
+	width: 1em;
+	text-align: center;
+	color: white;
+	line-height: 2em;
+}
+
+.remove-card.disabled {
+	color: transparent;
+}
+
+.add-card {
+	line-height: 4.5em;
+	text-align: center;
+}
+
+.add-card a {
+	font-size: 2em;
+	position: absolute;
+	display: block;
+	margin: auto;
+	width: 100%;
+	color: white;
+}
+
+.input .card-thumb {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 4em;
+	height: 4em;
+	margin: 0.25em;
+	background-color: white;
+	border-radius: .5em;
+	line-height: 4em;
+}
+
+.input .abilities {
+	position: absolute;
+	right: 2em;
+	left: 4.25em;
+	height: 4.5em;
+	padding-top: .2em;
+	padding-left: .5em;
+}
+
+.input .abilities input {
+	max-width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+@media screen and (max-width: 30rem) {
+	
+}

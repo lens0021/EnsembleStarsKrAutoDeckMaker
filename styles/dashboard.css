@@ -1,26 +1,6 @@
-body {
-	margin: 0;
-	padding: 0;
-	background-color: lightgray;
-}
-
 a {
 	color: black;
 	text-decoration: none;
-}
-
-.header {
-	overflow: hidden;
-	text-align: center;
-}
-
-.content {
-	max-width: 50rem;
-	height: 100%;
-	margin: 0 auto;
-	padding: 1em;
-	overflow: hidden;
-	background-color: white;
 }
 
 /*
@@ -28,14 +8,6 @@ a {
 보컬 #00b1ec
 퍼포먼스 #f2b119
 */
-
-div.header h1 {
-	margin-bottom: 0;
-}
-
-div.header h2 {
-	margin-top: 0;
-}
 
 .content ol, .content ul {
 	padding: 0;
@@ -59,7 +31,7 @@ div.header h2 {
 	margin-left: 1em;
 }
 
-.display {
+.dashboard {
 	font-size: 1.3em;
 	position: relative;
 	margin: auto;
@@ -276,161 +248,8 @@ div.header h2 {
 	padding-top: .5em;
 }
 
-.input {
-	text-align: center;
-}
-
-.input .card, .input .add-card {
-	position: relative;
-	display: inline-block;
-	width: 11em;
-	height: 4.5em;
-	border-radius: .5em;
-	background-color: lightgray;
-	margin: .1em;
-}
-
-.remove-card {
-	font-size: 2em;
-	position: absolute;
-	display: block;
-	right: 0.1em;
-	top: 0;
-	bottom: 0;
-	width: 1em;
-	text-align: center;
-	color: white;
-	line-height: 2em;
-}
-
-.remove-card.disabled {
-	color: transparent;
-}
-
-.add-card {
-	line-height: 4.5em;
-	text-align: center;
-}
-
-.add-card a {
-	font-size: 2em;
-	position: absolute;
-	display: block;
-	margin: auto;
-	width: 100%;
-	color: white;
-}
-
-.input .card-thumb {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	width: 4em;
-	height: 4em;
-	margin: 0.25em;
-	background-color: white;
-	border-radius: .5em;
-	line-height: 4em;
-}
-
-.input .abilities {
-	position: absolute;
-	right: 2em;
-	left: 4.25em;
-	height: 4.5em;
-	padding-top: .2em;
-	padding-left: .5em;
-}
-
-.input .abilities input {
-	max-width: 100%;
-	margin: 0;
-	padding: 0;
-	border: none;
-}
-
-.tools ul {
-	overflow: hidden;
-}
-
-.tools li {
-	float: left;
-}
-
-.tools li~li {
-	padding-left: 1em;
-}
-
-.export {
-	display: none;
-}
-
-.export textarea {
-	width: 100%;
-	height: 5em;
-}
-
-.footer {
-	padding-top: 1em;
-	margin-bottom: 3em;
-	border-top: 0.05rem solid lightgray;
-}
-
-.footer p {
-	margin-top: 0em;
-	font-size: .8em;
-}
-
-.overlay {
-	display: none;
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background-color: #0008;
-}
-
-.idolPicker {
-	position: fixed;
-	max-width: 50em;
-	top: 1em;
-	right: 2em;
-	bottom: 1em;
-	left: 2em;
-	background-color: white;
-	margin: auto;
-	border-radius: 1em;
-}
-
-.idolPicker ol {
-	list-style-type: none;
-    padding: 1em;
-}
-
-.idolPicker ol li {
-	margin: .5em auto;
-}
-
-.idolPicker li a {
-	display: block;
-	float: left;
-	margin: .2em;
-	border-radius: .5em;
-	width: 4em;
-	height: 1.1em;
-	padding: .4em;
-	color: white;
-	background-color: gray;
-	text-align: center;
-}
-
 @media screen and (max-width: 30rem) {
-	.content {
-		padding: 1em 0;
-	}
-	.display {
+	.dashboard {
 		font-size: 1em;
 		height: 20em;
 	}
@@ -439,12 +258,5 @@ div.header h2 {
 	}
 	.deck-option {
 		display: none;
-	}
-
-	.idolPicker {
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
 	}
 }

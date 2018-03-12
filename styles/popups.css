@@ -1,0 +1,57 @@
+a {
+	color: black;
+	text-decoration: none;
+}
+
+.overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: #0008;
+}
+
+.idolPicker {
+	position: fixed;
+	max-width: 50em;
+	top: 1em;
+	right: 2em;
+	bottom: 1em;
+	left: 2em;
+	background-color: white;
+	margin: auto;
+	border-radius: 1em;
+}
+
+.idolPicker ol {
+	list-style-type: none;
+    padding: 1em;
+}
+
+.idolPicker ol li {
+	margin: .5em auto;
+}
+
+.idolPicker li a {
+	display: block;
+	float: left;
+	margin: .2em;
+	border-radius: .5em;
+	width: 4em;
+	height: 1.1em;
+	padding: .4em;
+	color: white;
+	background-color: gray;
+	text-align: center;
+}
+
+@media screen and (max-width: 30rem) {
+	.idolPicker {
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+}
